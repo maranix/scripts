@@ -5,7 +5,8 @@ sourceDir=$PWD
 
 function deps(){
 clear
-sudo apt-get install cmake git perl nasm meson python3-opencv libsm6 python3 python3-pip python3-setuptools python3-wheel
+sudo apt-get install cmake git perl nasm meson python3-opencv libsm6 python3 python3-setuptools python3-wheel
+sudo python3 -m pip uninstall pip && sudo apt install python3-pip --reinstall
 }
 
 function av1an(){
