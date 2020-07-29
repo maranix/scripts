@@ -18,6 +18,8 @@ if __name__ == "__main__":
     print("Platform type: {}".format(platform.system()))
     print("Creating mount points")
     createMounts()
+
+    # Probably broken for now
     if platform.system() == "Linux":
         for i in range(len(mount_point)):
             subprocess.run(["mkdir", "~/CloudDrives/{}".format(mount_points[i])])
