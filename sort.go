@@ -1,21 +1,22 @@
 package main
 
 import (
-	"crypto/md5"
 	"fmt"
 	"os"
-	"path/filepath"
 )
 
 func main() {
-	err := filepath.Walk(".", func(path string, _ os.FileInfo, _ error) error {
-		data := []byte(path)
-		fmt.Printf(path+" %x\n", md5.Sum(data))
-		return nil
-	})
-
+	file, err := os.Open(".")
 	if err != nil {
-		fmt.Printf("error walking the path: %v\n", err)
-		return
+		fmt.Println(err)
 	}
+	names, err := file.Readdirnames(0)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for _, name := range names {
+		fmt.Println(name)
+	}
+
 }
