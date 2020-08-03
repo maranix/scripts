@@ -35,7 +35,7 @@ def windows():
 
     print("Mounting {}".format(remotes[m]))
 
-    subprocess.run(["powershell", "Start-Job", "-Name " + "\"%s\"" % remotes[m], "-ScriptBlock", "{", "rclone", "mount", "{}:".format(remotes[m]), "{}:".format(mount_points[m]), "--fuse-flag", "--VolumePrefix=\server\{}".format(remotes[m]), "--vfs-cache-mode", "writes", "}", ";", "echo", "\"Mounting Successful\"", ";" , "PAUSE" ])
+    subprocess.run(["powershell", "Start-Job", "-Name " + "\"%s\"" % remotes[m], "-ScriptBlock", "{", "rclone", "mount", "{}:".format(remotes[m]), "{}:".format(mount_points[0]), "--fuse-flag", "--VolumePrefix=\server\{}".format(remotes[m]), "--vfs-cache-mode", "writes", "}", ";", "echo", "\"Mounting Successful\"", ";" , "PAUSE" ])
 
 if __name__ == "__main__":
 
