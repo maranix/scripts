@@ -7,7 +7,9 @@ import (
 	"regexp"
 )
 
-func createDir(s []string) {
+var Anime = []string{"Enter Group names to sort"}
+
+func createDir() {
 	if _, err := os.Stat("Encoders folder"); err == nil {
 		fmt.Println("Directory exists.")
 	} else if os.IsNotExist(err) {
@@ -18,11 +20,11 @@ func createDir(s []string) {
 		}
 	}
 
-	for i := range s {
-		if _, err := os.Stat("Encoders folder/[" + s[i] + "]"); err == nil {
+	for i := range Anime {
+		if _, err := os.Stat("Encoders folder/[" + Anime[i] + "]"); err == nil {
 			fmt.Println("Group directories exists.")
 		} else if os.IsNotExist(err) {
-			err := os.Mkdir("Encoders folder/["+s[i]+"]", 0666)
+			err := os.Mkdir("Encoders folder/["+Anime[i]+"]", 0666)
 
 			if err != nil {
 				log.Fatal(err)
@@ -32,7 +34,6 @@ func createDir(s []string) {
 }
 
 func createList() {
-	Anime := []string{"Enter Group names to sort"}
 	file, err := os.Open(".")
 	if err != nil {
 		log.Fatal(err)
@@ -43,7 +44,7 @@ func createList() {
 		log.Fatal(err)
 	}
 
-	createDir(Anime)
+	createDir()
 
 	for i := range Anime {
 		re := regexp.MustCompile(Anime[i])
