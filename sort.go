@@ -45,10 +45,13 @@ func createList() {
 	}
 
 	createDir()
+	sort(names)
+}
 
+func sort(n []string) {
 	for i := range Anime {
 		re := regexp.MustCompile(Anime[i])
-		for _, name := range names {
+		for _, name := range n {
 			match := re.FindAllString(name, -1)
 			if match != nil {
 				fmt.Println(name)
