@@ -56,7 +56,7 @@ func sort(n []string) {
 				fmt.Println(name)
 				err := os.Rename(name, "Encoders folder/["+Anime[i]+"]"+"/"+name)
 				if err != nil {
-					log.Fatal(err)
+					fmt.Println(err)
 				}
 			}
 		}
