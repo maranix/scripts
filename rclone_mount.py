@@ -1,6 +1,6 @@
 import subprocess, platform, os, random, string
 
-remotes = ["Edu", "Mavi_New", "Mavi_Old", "Mavi_Alvro"]
+remotes = ["Edu", "Mavi_New", "Mavi_Old", "Mavi_Alvro", "Mavi_Tv", "Mavi_Anime", "Mavi_Movies"]
 mount_points = []
 
 def genChar():
@@ -13,9 +13,9 @@ def genChar():
 
 def linux():
     for i in range(len(remotes)):
-        subprocess.run(["mkdir", "~/CloudDrives/{}".format(remotes[i])])
-        subprocess.run(["rclone", "mount", "{}:".format(remotes[i]), "~/CloudDrives/{}:".format(remotes[i]), "--allow-non-empty", "--daemon"])
-    
+        subprocess.run(["mkdir", "{}".format(remotes[i])])
+        subprocess.run(["rclone", "mount", "{}:".format(remotes[i]), "{}".format(remotes[i]), "--daemon"])
+
     print("All drives mounted successfuly")
 
 def windows():
