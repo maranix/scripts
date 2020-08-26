@@ -22,7 +22,6 @@ func createDir() {
 
 	for i := range Anime {
 		if _, err := os.Stat("Encoders folder/[" + Anime[i] + "]"); err == nil {
-			fmt.Println("Group directories exists.")
 		} else if os.IsNotExist(err) {
 			err := os.Mkdir("Encoders folder/["+Anime[i]+"]", 0666)
 
