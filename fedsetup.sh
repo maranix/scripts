@@ -18,9 +18,15 @@ sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/dock
 sudo dnf -y update
 sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
 sudo dnf -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-sudo dnf -y install microsoft-edge-dev code dnf-plugins-core docker-ce docker-ce-cli containerd.io go transmission vlc
+sudo dnf -y install microsoft-edge-dev code dnf-plugins-core docker-ce docker-ce-cli containerd.io go transmission vlc sensors yarn
 
 sudo curl https://rclone.org/install.sh | sudo bash
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.1/install.sh | bash
+nvm install node
+nvm use node
+
+pip install s-tui
 
 sudo dnf -y remove totem gnome-boxes hg firefox rhythmbox
 
