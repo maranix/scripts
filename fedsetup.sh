@@ -12,16 +12,16 @@ sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
 
 # Docker
-# sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
 
 ## Install
 sudo dnf -y update
 sudo dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
 sudo dnf -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 sudo dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
-sudo dnf -y install microsoft-edge-dev code go transmission vlc sensors yarn gh # dnf-plugins-core docker-ce docker-ce-cli containerd.io
+sudo dnf -y install microsoft-edge-beta code go transmission vlc yarnpkg gh dnf-plugins-core docker-ce docker-ce-cli containerd.io
 
-sudo curl https://rclone.org/install.sh | sudo bash
+#sudo curl https://rclone.org/install.sh | sudo bash
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.1/install.sh | bash
 export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" &&  # This loads nvm
@@ -33,6 +33,6 @@ pip install s-tui
 
 sudo dnf -y remove totem gnome-boxes hg firefox rhythmbox
 
-# sudo groupadd docker
-# sudo usermod -aG docker $USER
-# sudo systemctl enable docker
+sudo groupadd docker
+sudo usermod -aG docker $USER
+sudo systemctl enable docker
