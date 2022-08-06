@@ -4,6 +4,7 @@ echo "Installing Typescript & Language servers"
 npm install --location=global typescript typescript-language-server yarn vscode-langservers-extracted @tailwindcss/language-server
 go install golang.org/x/tools/gopls@latest
 cargo install cargo-edit
+go install github.com/jesseduffield/lazygit@latest
 
 clear
 
