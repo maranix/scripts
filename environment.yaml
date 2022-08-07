@@ -1,0 +1,64 @@
+- name: Setting up desktop environment
+  hosts: localhost
+  tasks:
+    - name: Adding Regolith apt-key
+      shell:
+        cmd: wget -qO - https://regolith-desktop.org/regolith.key | gpg --dearmor | sudo tee /usr/share/keyrings/regolith-archive-keyring.gpg > /dev/null
+   
+    - name: Adding Regolith apt-repository
+      shell:
+        cmd: echo deb "[arch=amd64 signed-by=/usr/share/keyrings/regolith-archive-keyring.gpg] https://regolith-desktop.org/release-ubuntu-jammy-amd64 jammy main" | sudo tee /etc/apt/sources.list.d/regolith.list
+   
+    - name: Installing Regolith Desktop Environment
+      become: yes
+      apt:
+        name: regolith-desktop
+        state: present
+        update_cache: yes
+   
+    - name: Installing additional Regolith DE Pacakges
+      become: yes
+      apt:
+        name:
+          - i3xrocks-focused-window-name
+          - i3xrocks-rofication
+          - i3xrocks-info
+          - i3xrocks-app-launcher
+          - i3xrocks-memory
+          - i3xrocks-battery
+   
+    - name: Installing ZSH
+      become: yes
+      apt:
+        name: zsh
+   
+    - name: Fetching oh-my-zsh 
+      uri:
+        url: https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+        return_content: yes
+      register: omz_install
+   
+    - name: Installing oh-my-zsh
+      shell:
+        cmd: sh
+        stdin: '{{ omz_install.content }}'
+   
+    - name: Fetching oh-my-zsh configuration from git
+      get_url:
+        url: https://raw.githubusercontent.com/ramanverma2k/dotfiles/main/.zshrc
+        dest: ~/
+
+    - name: Installing oh-my-zsh plugins
+      git:
+        repo: 'https://github.com/zsh-users/{{ item }}'
+        dest: ~/.oh-my-zsh/custom/plugins/{{ item }}
+      loop:
+        - zsh-autosuggestions
+        - zsh-syntax-highlighting
+
+    - name: Updating all packages
+      become: yes
+      apt:
+        name: '*'
+        state: latest
+        update_cache: yes

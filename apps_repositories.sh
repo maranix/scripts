@@ -1,33 +1,4 @@
-#!/bin/zsh
-
-echo "Installing zsh plugins..."
-git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
-
-echo "Installing programming languages"
-
-# NVM
-echo "Installing node"
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | zsh
-source "$HOME/.zshrc"
-nvm install node
-nvm use node
-
-# Rust
-echo "Installing Rust"
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-
-# Flutter / Dart
-git clone https://github.com/flutter/flutter.git -b stable --depth=1 "$HOME"/.flutter
-
-# Install applications & Packages
-
-# PPA
-sudo add-apt-repository -y ppa:longsleep/golang-backports
-sudo add-apt-repository -y ppa:maarten-fonville/android-studio
-sudo add-apt-repository -y ppa:kritalime/ppa
-sudo add-apt-repository -y ppa:savoury1/ffmpeg4
-sudo add-apt-repository -y ppa:savoury1/vlc3
+#!/bin/bash
 
 # VSCode
 wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
@@ -53,17 +24,3 @@ chmod 644 /tmp/onlyoffice.gpg
 sudo chown root:root /tmp/onlyoffice.gpg
 sudo mv /tmp/onlyoffice.gpg /etc/apt/trusted.gpg.d/
 echo 'deb https://download.onlyoffice.com/repo/debian squeeze main' | sudo tee -a /etc/apt/sources.list.d/onlyoffice.list
-
-sudo nala update
-sleep 5
-
-sudo nala install -y android-studio code gh clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl doxygen clang clangd cmake gcc g++ krita onlyoffice-desktopeditors vlc fzf ripgrep tmux libssl-dev pkg-config golang-go
-sleep 5
-
-# Docker Setup
-clear
-echo "Installing docker..."
-sudo nala install -y --fix-broken ca-certificates curl gnupg lsb-release docker-ce docker-ce-cli containerd.io docker-compose-plugin
-sudo groupadd docker
-sudo usermod -aG docker "$USER"
-sudo systemctl enable docker
