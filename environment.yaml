@@ -7,18 +7,19 @@
         name:
           - zsh
           - git
-   
+          - curl
+
     - name: Fetching oh-my-zsh
       uri:
         url: https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh
         return_content: yes
       register: omz_install
-   
+
     - name: Installing oh-my-zsh
       shell:
         cmd: sh
         stdin: '{{ omz_install.content }}'
-   
+
     - name: Fetching oh-my-zsh configuration from git
       get_url:
         url: https://raw.githubusercontent.com/ramanverma2k/dotfiles/main/.zshrc
