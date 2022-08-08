@@ -13,19 +13,15 @@ sudo add-apt-repository --yes --update ppa:ansible/ansible
 sudo apt install ansible
 ```
 
-# 
-
-## __Ubuntu, PopOS, WSL Ubuntu__
+# __Clone this repo__
 ```git
 git clone https://github.com/ramanverma2k/scripts
 ```
-
 # __Execute Playbook__
 ## __Ubuntu, PopOS__
 ```bash
 ansible-playbook ./setup/setup.yaml --ask-become-pass
 ```
-
 
 ## __WSL Ubuntu__
 ```bash
