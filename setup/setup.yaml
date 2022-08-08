@@ -162,7 +162,7 @@
       shell: go install github.com/jesseduffield/lazygit@latest
 
     - name: Installing Cargo Edit
-      shell: cargo install cargo-edit
+      shell: /usr/bin/zsh -ic 'cargo install cargo-edit'
 
     - name: Cloning Neovim
       git:
