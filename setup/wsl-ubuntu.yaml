@@ -163,5 +163,8 @@
         - lazygit
         - nvim
 
+    - name: Cleaning up
+      shell: rm -rf neovim dotfiles
+
     - name: Configuring git
       shell: git config --global user.name "ramanverma2k" && git config --global user.email "ramanverma4183@gmail.com" && git config --global core.editor "nvim"
