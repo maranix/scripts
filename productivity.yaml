@@ -37,7 +37,7 @@
         depth: 1
         dest: ~/.flutter
 
-    - name: Adding PPA Repositories for Golang, Android Studio, VLC & Krita 
+    - name: Adding PPA Repositories for Golang, Android Studio, VLC & Krita
       become: yes
       apt_repository:
         repo: 'ppa:{{ item }}'
@@ -49,10 +49,19 @@
         - savoury1/ffmpeg4
         - savoury1/vlc3
 
+    - name: Seperating gpg keys for previously added repositories into individual files
+      become: yes
+      shell: apt-key export {{ item.key }} | gpg --dearmour -o /etc/apt/trusted.gpg.d/{{ item.value }}.gpg
+      loop:
+        - { key: "56A3D45E", value: "golang-backports" }
+        - { key: "DC6A13A3", value: "android-studio" }
+        - { key: "01CEE17F", value: "kritalime" }
+        - { key: "FB006459", value: "savoury1" }
+
     - name: Adding VSCode, Docker, OnlyOffice & GitHub CLI repositories
       become: yes
       shell:
-        cmd: chmod +x ./apps_repositories.sh
+        cmd: chmod +x ./apps_repositories.sh && ./apps_repositories.sh
 
     - name: Updating apt cache
       become: yes
@@ -103,7 +112,7 @@
 
     - name: Adding Docker to usergroup
       become: yes
-      shell: groupadd docker && usermod -aG docker "$USER" && systemctl enable docker
+      shell: usermod -aG docker "$USER" && systemctl enable docker
 
     - name: Installing Language Servers
       shell: /usr/bin/zsh -ic 'npm install --location=global typescript typescript-language-server yarn vscode-langservers-extracted @tailwindcss/language-server'
@@ -120,6 +129,7 @@
     - name: Cloning Neovim
       git:
         repo: https://github.com/neovim/neovim
+        dest: ./neovim
         depth: 1
         version: stable
 
@@ -134,15 +144,16 @@
       args:
         chdir: ./neovim/
 
-    - name: "Fetching configs from git"
+    - name: Fetching configs from git
       git:
         repo: https://github.com/ramanverma2k/dotfiles
         dest: ./dotfiles
 
-    - name: "Setting up configs"
-      copy:
-        src: ./dotfiles/{{ item }}
-        dest: ~/.config/{{ item }}
+    - name: Setting up configs
+      command: cp -r ./dotfiles/{{ item }} ~/.config/
       loop:
         - lazygit
         - nvim
+
+    - name: Configuring git
+      shell: git config --global user.name "ramanverma2k" && git config --global user.email "ramanverma4183@gmail.com" && git config --global core.editor "nvim"
