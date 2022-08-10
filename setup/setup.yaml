@@ -140,6 +140,7 @@
           - docker-ce-cli
           - containerd.io
           - docker-compose-plugin
+          - xclip
         state: present
     
     - name: Updating remaining packages
