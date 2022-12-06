@@ -9,7 +9,7 @@
     chdir: ~/setup/alacritty
 
 - name: Configuring alacritty
-  shell: {{ item }}
+  shell: "{{ item }}"
   loop:
     # ZSH
     - mkdir -p ${ZDOTDIR:-~}/.zsh_functions 

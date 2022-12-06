@@ -5,7 +5,7 @@
 
 - name: Building rofi
   become_user: yes
-  shell: {{ item }}
+  shell: "{{ item }}"
   args:
     chdir: ~/setup/rofi
   loop:
