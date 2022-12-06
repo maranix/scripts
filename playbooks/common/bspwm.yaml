@@ -34,4 +34,5 @@
     - sxhkd
 
 - name: Making bspwmrc executable & setting up autostart
-  shell: chmod u+x ~/.config/bspwm/bspwmrc && echo 'exec bspwmrc' > ~/.xinitrc
+  shell:
+    cmd: chmod u+x ~/.config/bspwm/bspwmrc && echo 'exec bspwmrc' > ~/.xinitrc

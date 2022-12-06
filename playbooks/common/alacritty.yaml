@@ -9,13 +9,26 @@
     chdir: ~/setup/alacritty
 
 - name: Configuring alacritty
-  shell: "{{ item }}"
+  become_user: true
+  shell: 
+    cmd: "{{ item }}"
+    chdir: ~/setup/alacritty
   loop:
-    # ZSH
+    # Put compiled binary in /usr/local/bin
+    - sudo cp target/release/alacritty /usr/local/bin
+    # Desktop icon
+    - sudo cp extra/logo/alacritty-term.svg /usr/share/pixmaps/Alacritty.svg
+    - sudo desktop-file-install extra/linux/Alacritty.desktop
+    - sudo update-desktop-database
+    # Man pages
+    - sudo mkdir -p /usr/local/share/man/man1
+    - gzip -c extra/alacritty.man | sudo tee /usr/local/share/man/man1/alacritty.1.gz > /dev/null
+    - gzip -c extra/alacritty-msg.man | sudo tee /usr/local/share/man/man1/alacritty-msg.1.gz > /dev/null
+    # ZSH completions
     - mkdir -p ${ZDOTDIR:-~}/.zsh_functions 
     - echo 'fpath+=${ZDOTDIR:-~}/.zsh_functions' >> ${ZDOTDIR:-~}/.zshrc
     - cp extra/completions/_alacritty ${ZDOTDIR:-~}/.zsh_functions/_alacritty
-    # BASH
+    # BASH completions
     - mkdir -p ~/.bash_completion
     - cp extra/completions/alacritty.bash ~/.bash_completion/alacritty
     - echo "source ~/.bash_completion/alacritty" >> ~/.bashrc

@@ -17,7 +17,7 @@
         - '@Printing Support'
         state: latest
 
-    - name: Installing dependencies for alacritty, bspwm, rofi, eww.
+    - name: Installing dependencies for alacritty, bspwm, eww.
       become: true
       dnf:
         name:
@@ -38,38 +38,6 @@
           - libxcb-devel
           - libxkbcommon-devel
           - g++
-          #Rofi
-          - gcc
-          - make
-          - autoconf
-          - automake
-          - pkg-config
-          - flex
-          - bison
-          - pango
-          - pango-devel
-          - cairo
-          - cairo-devel
-          - glib2
-          - glib2-devel
-          - librsvg2
-          - librsvg2-devel
-          - libxkbcommon
-          - libxkbcommon-devel
-          - libxkbcommon-x11
-          - libxkbcommon-x11-devel
-          - libxcb
-          - libxcb-devel
-          - startup-notification
-          - startup-notification-devel
-          - xcb-util
-          - xcb-util-devel
-          - xcb-util-wm
-          - xcb-util-wm-devel
-          - xcb-util-xrm
-          - xcb-util-xrm-devel
-          - check
-          - check-devel
           #eww
           - gtk3-devel
           - gtk-layer-shell-devel

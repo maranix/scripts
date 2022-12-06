@@ -13,15 +13,20 @@
   shell:
     cmd: source ~/.bashrc
 
-- name: Cloning, Configuring & Installing BSPWM, Rofi, Eww & Alacritty
+- name: Cloning, Configuring & Installing BSPWM, Eww & Alacritty
   include_tasks: '{{ cosmetics }}'
   loop:
     - bspwm.yaml
     - alacritty.yaml
     - eww.yaml
-    - rofi.yaml
   loop_control:
     loop_var: "cosmetics"
+
+- name: Installing Rofi
+  become_user: true
+  dnf:
+    name: rofi
+    state: latest
 
 - name: Editing BSPWMRC to include alacritty & rofi
   shell: '{{ item }}'
@@ -30,11 +35,10 @@
   loop:
     - grep -rl "urxvt" ./ | xargs sed -i "s/urxvt/alacritty/" 
 
-
-- name: Setting up SDDM
+- name: Setting up gdm
   become_user: true
   shell:
-    cmd: sudo systemctl '{{ item }}'
+    cmd: sudo systemctl {{ item }}
   loop:
     - enable sddm
     - start sddm

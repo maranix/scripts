@@ -12,3 +12,9 @@
   shell:
     cmd: chmod +x ./eww
     chdir: ~/setup/eww/target/release
+
+- name: Copying eww to /usr/local/bin
+  become_user: true
+  shell:
+    cmd: cp target/release/eww /usr/local/bin
+    chdir: ~/setup/ewwc
