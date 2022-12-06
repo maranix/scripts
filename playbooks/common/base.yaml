@@ -23,7 +23,7 @@
     loop_var: "cosmetics"
 
 - name: Installing Rofi
-  become_user: true
+  become: true
   dnf:
     name: rofi
     state: latest
