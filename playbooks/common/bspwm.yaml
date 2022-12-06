@@ -1,32 +1,30 @@
-- name: Setting up BSPWM
-  task:
-    - name: Cloning bspwm
-      git:
-        repo: https://github.com/baskerville/'{{ item }}'
-        dest: ~/setup/
-      loop:
-        - bspwm
-        - sxhkd
+- name: Cloning bspwm
+  git:
+    repo: https://github.com/baskerville/'{{ item }}'
+    dest: ~/setup/
+  loop:
+    - bspwm
+    - sxhkd
 
-    - name: Building bspwm
-      become: yes
-      shell: make && sudo make install
-      args:
-        chdir: ~/setup/bspw
+- name: Building bspwm
+  become: yes
+  shell: make && sudo make install
+  args:
+    chdir: ~/setup/bspw
 
-    - name: Building sxhkd
-      become: yes
-      shell: make && sudo make install
-      args:
-        chdir: ~/setup/sxhkd
+- name: Building sxhkd
+  become: yes
+  shell: make && sudo make install
+  args:
+    chdir: ~/setup/sxhkd
 
-    - name: Configuring BSPWM
-      file:
-        path: ~/.config/'{{ item }}'
-        state: directory
-        mode: '0755'
-      loop:
-        - bspwm
-        - sxhkd
-      command: cp /usr/local/share/doc/bspwm/examples/'{{ item }}'rc ~/.config/'{{ item }}'/''{{ item }}'rc
-      shell: chmod u+x ~/.config/bspwm/bspwmrc && echo 'exec bspwmrc' > ~/.xinitrc
+- name: Configuring BSPWM
+  file:
+    path: ~/.config/'{{ item }}'
+    state: directory
+    mode: '0755'
+  loop:
+    - bspwm
+    - sxhkd
+  command: cp /usr/local/share/doc/bspwm/examples/'{{ item }}'rc ~/.config/'{{ item }}'/''{{ item }}'rc
+  shell: chmod u+x ~/.config/bspwm/bspwmrc && echo 'exec bspwmrc' > ~/.xinitrc

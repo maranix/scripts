@@ -1,24 +1,22 @@
-- name: Setting up Rofi
-  task:
-    - name: Cloning Rofi
-      git:
-        repo: https://github.com/DaveDavenport/rofi
-        dest: ~/setup/
+- name: Cloning Rofi
+  git:
+    repo: https://github.com/DaveDavenport/rofi
+    dest: ~/setup/
 
-    - name: Building rofi
-      become: yes
-      shell: '{{ item }}'
-      args:
-        chdir: ~/setup/rofi
-      loop:
-        - autoreconf -i
-        - mkdir build
-        - cd build
-        - ../configure
-        - make
-        - make install
+- name: Building rofi
+  become: yes
+  shell: '{{ item }}'
+  args:
+    chdir: ~/setup/rofi
+  loop:
+    - autoreconf -i
+    - mkdir build
+    - cd build
+    - ../configure
+    - make
+    - make install
 
-    - name: Configuring eww
-      shell: chmod +x ./eww
-      args:
-        chdir: ~/setup/eww/target/release
+- name: Configuring eww
+  shell: chmod +x ./eww
+  args:
+    chdir: ~/setup/eww/target/release

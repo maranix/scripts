@@ -77,6 +77,9 @@
           - gdk-pixbuf2-devel
           - cairo-devel
           - glib2-devel
-          - gcc-libs-devel
           - glibc-devel
         state: latest
+
+    - name: Installing base
+      import_tasks:
+        file: common/base.yaml

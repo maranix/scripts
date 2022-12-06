@@ -10,11 +10,7 @@
     stdin: "{{ rust_installer.content }}"
 
 - name: Cloning, Configuring & Installing BSPWM, Rofi, Eww & Alacritty
-  file:
-    path: ~/setup/
-    state: directory
-    mode: '0755'
-  import_playbook: '{{ item }}'
+  include_tasks: '{{ item }}'
   loop:
     - bspwm.yaml
     - alacritty.yaml
