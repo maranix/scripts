@@ -27,9 +27,11 @@
     - bspwm
     - sxhkd
 
-- name: Configuring BSPWM
+- name: Copying rc files in ~/.config
   command: cp /usr/local/share/doc/bspwm/examples/'{{ item }}'rc ~/.config/'{{ item }}'/'{{ item }}'rc
   loop:
     - bspwm
     - sxhkd
+
+- name: Making bspwmrc executable & setting up autostart
   shell: chmod u+x ~/.config/bspwm/bspwmrc && echo 'exec bspwmrc' > ~/.xinitrc
