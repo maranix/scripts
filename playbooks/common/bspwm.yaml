@@ -1,6 +1,6 @@
 - name: Cloning bspwm
   git:
-    repo: https://github.com/baskerville/'{{ item }}'
+    repo: https://github.com/baskerville/{{ item }}
     dest: ~/setup/
   loop:
     - bspwm
@@ -20,7 +20,7 @@
 
 - name: Creating BSPWM & SXHKD directories in ~/.config
   file:
-    path: ~/.config/'{{ item }}'
+    path: ~/.config/{{ item }}
     state: directory
     mode: '0755'
   loop:
@@ -28,7 +28,7 @@
     - sxhkd
 
 - name: Copying rc files in ~/.config
-  command: cp /usr/local/share/doc/bspwm/examples/'{{ item }}'rc ~/.config/'{{ item }}'/'{{ item }}'rc
+  command: cp /usr/local/share/doc/bspwm/examples/{{ item }}rc ~/.config/{{ item }}/{{ item }}rc
   loop:
     - bspwm
     - sxhkd
