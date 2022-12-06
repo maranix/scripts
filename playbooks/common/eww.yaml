@@ -1,14 +1,14 @@
 - name: Cloning eww
   git:
     repo: https://github.com/elkowar/eww
-    dest: ~/setup/
+    dest: ~/setup/eww
 
 - name: Building eww
-  shell: cargo build --release
-  args:
+  shell:
+    cmd: cargo build --release
     chdir: ~/setup/eww
 
 - name: Configuring eww
-  shell: chmod +x ./eww
-  args:
+  shell:
+    cmd: chmod +x ./eww
     chdir: ~/setup/eww/target/release

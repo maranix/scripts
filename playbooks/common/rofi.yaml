@@ -1,11 +1,11 @@
 - name: Cloning Rofi
   git:
     repo: https://github.com/DaveDavenport/rofi
-    dest: ~/setup/
+    dest: ~/setup/rofi
 
 - name: Building rofi
-  become: yes
-  shell: '{{ item }}'
+  become_user: yes
+  shell: {{ item }}
   args:
     chdir: ~/setup/rofi
   loop:

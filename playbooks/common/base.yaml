@@ -28,7 +28,7 @@
 
 
 - name: Setting up SDDM
-  become: true
+  become_user: true
   shell:
     cmd: sudo systemctl '{{ item }}'
   loop:

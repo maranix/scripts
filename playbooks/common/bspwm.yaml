@@ -7,13 +7,13 @@
     - sxhkd
 
 - name: Building bspwm
-  become: yes
+  become_user: yes
   shell: make && sudo make install
   args:
     chdir: ~/setup/bspwm
 
 - name: Building sxhkd
-  become: yes
+  become_user: yes
   shell: make && sudo make install
   args:
     chdir: ~/setup/sxhkd

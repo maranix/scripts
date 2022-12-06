@@ -1,15 +1,15 @@
 - name: Cloning alacritty
   git:
     repo: https://github.com/alacritty/alacritty
-    dest: ~/setup/
+    dest: ~/setup/alacritty
 
 - name: Building alacritty
-  shell: rustup override set stable && rustup update stable && cargo build --release
-  args:
+  shell:
+    cmd: rustup override set stable && rustup update stable && cargo build --release
     chdir: ~/setup/alacritty
 
 - name: Configuring alacritty
-  shell: '{{ item }}'
+  shell: {{ item }}
   loop:
     # ZSH
     - mkdir -p ${ZDOTDIR:-~}/.zsh_functions 
