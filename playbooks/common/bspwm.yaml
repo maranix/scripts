@@ -1,7 +1,7 @@
 - name: Cloning bspwm
   git:
     repo: https://github.com/baskerville/{{ item }}
-    dest: ~/setup/
+    dest: ~/setup/{{ item }}
   loop:
     - bspwm
     - sxhkd
@@ -10,7 +10,7 @@
   become: yes
   shell: make && sudo make install
   args:
-    chdir: ~/setup/bspw
+    chdir: ~/setup/bspwm
 
 - name: Building sxhkd
   become: yes
