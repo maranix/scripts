@@ -20,3 +20,5 @@ install() {
     ;;
   esac
 }
+
+install
