@@ -10,12 +10,14 @@
     stdin: "{{ rust_installer.content }}"
 
 - name: Cloning, Configuring & Installing BSPWM, Rofi, Eww & Alacritty
-  include_tasks: '{{ item }}'
+  include_tasks: '{{ cosmetics }}'
   loop:
     - bspwm.yaml
     - alacritty.yaml
     - eww.yaml
     - rofi.yaml
+  loop_control:
+    loop_var: "cosmetics"
 
 - name: Editing BSPWMRC to include alacritty & rofi
   shell: '{{ item }}'
