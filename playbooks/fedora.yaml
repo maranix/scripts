@@ -1,0 +1,82 @@
+---
+- name: Setting up Fedora
+  hosts: localhost
+  tasks:
+    - name: Installing Development, Hardware, Printing, Multimedia, Fonts & Input method groups.
+      become: true
+      dnf:
+        name:
+        - zsh
+        - git
+        - '@C Development Tools and Libraries'
+        - '@Development Tools'
+        - '@Hardware Support'
+        - '@Fonts'
+        - '@Input Methods'
+        - '@Multimedia'
+        - '@Printing Support'
+        state: latest
+
+    - name: Installing dependencies for alacritty, bspwm, rofi, eww.
+      become: true
+      dnf:
+        name:
+          - sddm
+          # BSPWM
+          - libxcb
+          - xcb-util
+          - xcb-util-wm
+          - xcb-util-keysyms
+          - libxcb-devel
+          - xcb-util-wm-devel
+          - xcb-util-keysyms-devel
+          - xcb-util-devel
+          # Alacritty
+          - cmake
+          - freetype-devel
+          - fontconfig-devel
+          - libxcb-devel
+          - libxkbcommon-devel
+          - g++
+          #Rofi
+          - gcc
+          - make
+          - autoconf
+          - automake
+          - pkg-config
+          - flex
+          - bison
+          - pango
+          - pango-devel
+          - cairo
+          - cairo-devel
+          - glib2
+          - glib2-devel
+          - librsvg2
+          - librsvg2-devel
+          - libxkbcommon
+          - libxkbcommon-devel
+          - libxkbcommon-x11
+          - libxkbcommon-x11-devel
+          - libxcb
+          - libxcb-devel
+          - startup-notification
+          - startup-notification-devel
+          - xcb-util
+          - xcb-util-devel
+          - xcb-util-wm
+          - xcb-util-wm-devel
+          - xcb-util-xrm
+          - xcb-util-xrm-devel
+          - check
+          - check-devel
+          #eww
+          - gtk3-devel
+          - gtk-layer-shell-devel
+          - pango-devel
+          - gdk-pixbuf2-devel
+          - cairo-devel
+          - glib2-devel
+          - gcc-libs-devel
+          - glibc-devel
+        state: latest

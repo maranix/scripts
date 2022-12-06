@@ -1,0 +1,39 @@
+- name: Fetch rustup
+  uri:
+    url: https://sh.rustup.rs
+    return_content: yes
+  register: rust_installer
+
+- name: Run rustup installer
+  shell:
+    cmd: sh -s -- -y
+    stdin: "{{ rust_installer.content }}"
+
+- name: Cloning, Configuring & Installing BSPWM, Rofi, Eww & Alacritty
+  file:
+    path: ~/setup/
+    state: directory
+    mode: '0755'
+  import_playbook: '{{ item }}'
+  loop:
+    - bspwm.yaml
+    - alacritty.yaml
+    - eww.yaml
+    - rofi.yaml
+
+- name: Editing BSPWMRC to include alacritty & rofi
+  shell: '{{ item }}'
+  args:
+    chdir: ~/.config/sxhkd/
+  loop:
+    - grep -rl "urxvt" ./ | xargs sed -i "s/urxvt/alacritty/" 
+
+
+- name: Setting up SDDM
+  become: true
+  shell:
+    cmd: sudo systemctl '{{ item }}'
+  loop:
+    - enable sddm
+    - start sddm
+    - set-default graphical.target
