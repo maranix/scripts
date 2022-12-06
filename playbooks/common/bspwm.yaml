@@ -18,7 +18,7 @@
   args:
     chdir: ~/setup/sxhkd
 
-- name: Configuring BSPWM
+- name: Creating BSPWM & SXHKD directories in ~/.config
   file:
     path: ~/.config/'{{ item }}'
     state: directory
@@ -26,5 +26,10 @@
   loop:
     - bspwm
     - sxhkd
+
+- name: Configuring BSPWM
   command: cp /usr/local/share/doc/bspwm/examples/'{{ item }}'rc ~/.config/'{{ item }}'/''{{ item }}'rc
+  loop:
+    - bspwm
+    - sxhkd
   shell: chmod u+x ~/.config/bspwm/bspwmrc && echo 'exec bspwmrc' > ~/.xinitrc
