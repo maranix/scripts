@@ -28,7 +28,7 @@
     - sxhkd
 
 - name: Configuring BSPWM
-  command: cp /usr/local/share/doc/bspwm/examples/'{{ item }}'rc ~/.config/'{{ item }}'/''{{ item }}'rc
+  command: cp /usr/local/share/doc/bspwm/examples/'{{ item }}'rc ~/.config/'{{ item }}'/'{{ item }}'rc
   loop:
     - bspwm
     - sxhkd
