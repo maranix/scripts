@@ -5,7 +5,7 @@
 
 - name: Building eww
   shell:
-    cmd: /usr/bin/zsh -ic cargo build --release
+    cmd: . /home/$(whoami)/.bashrc && cargo build --release
     chdir: ~/setup/eww
 
 - name: Configuring eww
