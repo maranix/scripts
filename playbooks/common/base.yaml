@@ -30,6 +30,7 @@
     chdir: ~/.config/sxhkd/
   loop:
     - grep -rl "urxvt" ./ | xargs sed -i "s/urxvt/alacritty/" 
+    - grep -rl "dmenu_run" ./ | xargs sed -i "s/dmenu_run/rofi -show combi -modes combi -combi-modes \"window,drun,run\" -show-icons/" 
 
 - name: Setting up gdm
   become_user: true
