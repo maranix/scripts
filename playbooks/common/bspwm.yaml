@@ -37,4 +37,4 @@
   become_user: true
   shell:
     cmd: chmod u+x ~/.config/bspwm/bspwmrc && sudo cp stuff/bspwm.desktop /usr/share/xsessions/
-    chdir: ~/setup
+    chdir: ~/scripts
