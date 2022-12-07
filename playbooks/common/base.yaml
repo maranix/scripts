@@ -9,10 +9,6 @@
     cmd: sh -s -- -y
     stdin: "{{ rust_installer.content }}"
 
-- name: Refreshing shell to include rustup
-  shell:
-    cmd: source ~/.bashrc
-
 - name: Cloning, Configuring & Installing BSPWM, Eww & Alacritty
   include_tasks: '{{ cosmetics }}'
   loop:

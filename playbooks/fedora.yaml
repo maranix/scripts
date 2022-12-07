@@ -21,6 +21,8 @@
       become: true
       dnf:
         name:
+          - xrandr
+          - feh
           - sddm
           # BSPWM
           - libxcb
