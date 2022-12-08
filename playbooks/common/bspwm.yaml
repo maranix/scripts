@@ -27,12 +27,6 @@
     - bspwm
     - sxhkd
 
-- name: Copying rc files in ~/.config
-  command: cp /usr/local/share/doc/bspwm/examples/{{ item }}rc ~/.config/{{ item }}/{{ item }}rc
-  loop:
-    - bspwm
-    - sxhkd
-
 - name: Making bspwmrc executable & setting up autostart
   become_user: true
   shell:

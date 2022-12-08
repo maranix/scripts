@@ -6,8 +6,6 @@
       become: true
       dnf:
         name:
-        - zsh
-        - git
         - '@C Development Tools and Libraries'
         - '@Development Tools'
         - '@Hardware Support'
