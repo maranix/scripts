@@ -14,6 +14,12 @@
     repo: https://github.com/ramanverma2k/dotfiles
     dest: ~/dotfiles
 
+- name: Create .config directory
+  file:
+    path: ~/.config/
+    state: directory
+    mode: '0755'
+
 - name: Copying dotfiles
   shell:
     cmd: cp -r {{ item }} ~/.config/{{ item }}
