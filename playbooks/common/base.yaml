@@ -12,7 +12,7 @@
 - name: Cloning dotfiles
   git:
     repo: https://github.com/ramanverma2k/dotfiles
-    dest: ~/
+    dest: ~/dotfiles
 
 - name: Copying dotfiles
   shell:
