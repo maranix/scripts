@@ -8,7 +8,7 @@
 
 - name: Cleaning up
   shell:
-    cmd:
+    cmd: rm -rf {{ item }}
     chdir: ~/
   loop:
     - setup
