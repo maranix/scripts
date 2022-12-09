@@ -59,13 +59,10 @@
           - firefox
           - thunar
           - gimp
-          - https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-          - https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-          - vlc
         state: latest
 
     - name: Executing common playbooks
-      include_tasks: '{{ common }}'
+      include_tasks: ./common/{{ common }}
       loop:
         - configs.yaml
         - shell.yaml
@@ -79,6 +76,21 @@
       loop_control:
         loop_var: "common"
         
+        
+    - name: Setting up Vlc Repository
+      become: true
+      shell:
+        cmd: sudo dnf install {{ item }}
+      loop:
+        - https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+        - https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+    - name: Installing VLC
+      become: true
+      dnf:
+        name: vlc
+        state: latest
+
     - name: Setting up VSCode Repository
       become: true
       shell:
