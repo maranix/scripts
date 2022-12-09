@@ -43,6 +43,8 @@
           - cairo-devel
           - glib2-devel
           - glibc-devel
+          #Neovim
+          - ninja-build
         state: latest
 
     - name: Installing additional tools
@@ -72,10 +74,8 @@
         - eww.yaml
         - fonts.yaml
         - tools.yaml
-        - cleanup.yaml
       loop_control:
         loop_var: "common"
-        
         
     - name: Setting up Vlc Repository
       become: true
@@ -132,3 +132,6 @@
         - wget https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors.x86_64.rpm
         - sudo dnf install ./onlyoffice-desktopeditors.x86_64.rpm -y
         - rm -rf onlyoffice-desktopeditors.x86_64.rpm
+    
+    - name: Executing cleanup playbook
+      include_tasks: ./common/cleanup.yaml

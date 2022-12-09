@@ -12,7 +12,7 @@
 
 - name: Installing Neovim
   become_user: yes
-  shell:  make install
+  shell: sudo make install
   args:
     chdir: ./neovim/
 
@@ -21,13 +21,3 @@
     repo: https://github.com/wbthomason/packer.nvim
     dest: ~/.local/share/nvim/site/pack/packer/start/packer.nvim
     depth: 1
-
-- name: Adding Docker to usergroup & enabling service
-  become_user: yes
-  shell:
-    cmd: sudo {{ item }}
-  loop:
-    - usermod -aG docker $(whoami)
-    - systemctl enable docker.service
-    - systemctl enable containerd.service
-    - systemctl start docker

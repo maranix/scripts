@@ -2,6 +2,7 @@
   git:
     repo: https://github.com/ryanoasis/nerd-fonts
     dest: ~/nerdfonts
+    depth: 1
     
 - name: Installing NerdFonts
   shell:

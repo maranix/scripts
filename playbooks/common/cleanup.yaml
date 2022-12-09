@@ -6,13 +6,15 @@
     - user.email "ramanverma4183@gmail.com" 
     - core.editor "nvim"
 
-- name: Cleaning up
+- name: Adding Docker to usergroup & enabling service
+  become_user: yes
   shell:
-    cmd: rm -rf {{ item }}
-    chdir: ~/
+    cmd: sudo {{ item }}
   loop:
-    - setup
-    - scripts
+    - usermod -aG docker $(whoami)
+    - systemctl enable docker.service
+    - systemctl enable containerd.service
+    - systemctl start docker
 
 - name: Setting up display manager
   become: true
