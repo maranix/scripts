@@ -1,0 +1,14 @@
+- name: Installing zsh shell
+  become: true
+  dnf:
+    name: zsh
+    state: latest
+
+- name: Installing oh-my-zsh
+  shell: 
+    cmd: sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+- name: Changing default shell to zsh
+  become: true
+  shell:
+    cmd: chsh -s $(which zsh)

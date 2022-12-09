@@ -1,0 +1,23 @@
+- name: Configuring git
+  shell:
+    cmd: git config --global {{ item }}
+  loop:
+    - user.name "ramanverma2k"
+    - user.email "ramanverma4183@gmail.com" 
+    - core.editor "nvim"
+
+- name: Cleaning up
+  shell:
+    cmd:
+    chdir: ~/
+  loop:
+    - setup
+    - scripts
+
+- name: Setting up display manager
+  become: true
+  shell:
+    cmd: sudo systemctl {{ item }}
+  loop:
+    - enable sddm.service
+    - set-default graphical.target

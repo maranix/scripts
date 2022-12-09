@@ -19,9 +19,6 @@
       become: true
       dnf:
         name:
-          - xrandr
-          - feh
-          - sddm
           # BSPWM
           - libxcb
           - xcb-util
@@ -48,61 +45,77 @@
           - glibc-devel
         state: latest
 
-    - name: Installing base
-      import_tasks:
-        file: common/base.yaml
-        
-    - name: Fetch rustup
-      uri:
-        url: https://sh.rustup.rs
-        return_content: yes
-      register: rust_installer
+    - name: Installing additional tools
+      become: true
+      dnf:
+        name:
+          - xrandr
+          - feh
+          - sddm
+          - gh
+          - rofi
+          - fzf
+          - ripgrep
+          - firefox
+          - thunar
+          - gimp
+          - https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+          - https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+          - vlc
+        state: latest
 
-    - name: Run rustup installer
-      shell:
-        cmd: sh -s -- -y
-        stdin: "{{ rust_installer.content }}"
-        
-    - name: Cloning dotfiles
-      git:
-        repo: https://github.com/ramanverma2k/dotfiles
-        dest: ~/dotfiles
-
-    - name: Create .config directory
-      file:
-        path: ~/.config/
-        state: directory
-        mode: '0755'
-
-    - name: Copying dotfiles
-      shell:
-        cmd: cp -r {{ item }} ~/.config/{{ item }}
-        chdir: ~/dotfiles/
+    - name: Executing common playbooks
+      include_tasks: '{{ common }}'
       loop:
-        - bspwm
-        - sxhkd
-        - eww
-        - wallpapers
-
-    - name: Cloning, Configuring & Installing BSPWM, Eww & Alacritty
-      include_tasks: '{{ cosmetics }}'
-      loop:
+        - configs.yaml
+        - shell.yaml
+        - languages.yaml
         - bspwm.yaml
         - alacritty.yaml
         - eww.yaml
+        - fonts.yaml
+        - tools.yaml
+        - cleanup.yaml
       loop_control:
-        loop_var: "cosmetics"
-
-    - name: Installing Rofi
-      become: true
-      dnf:
-        name: rofi
-        state: latest
-
-    - name: Setting up display manager
+        loop_var: "common"
+        
+    - name: Setting up VSCode Repository
       become: true
       shell:
-        cmd: sudo systemctl {{ item }}
+        cmd: sudo {{ item }}
       loop:
-        - enable sddm.service
-        - set-default graphical.target
+        - rpm --import https://packages.microsoft.com/keys/microsoft.asc
+        - sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+
+    - name: Installing VSCode
+      become: true
+      dnf:
+        name: code
+        state: latest
+
+    - name: Setting up Docker Repository
+      become: true
+      shell:
+        cmd: sudo dnf {{ item }}
+      loop:
+        - -y install dnf-plugins-core
+        - config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+
+    - name: Installing Docker
+      dnf:
+        name:
+        state: latest
+      loop:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        - docker-compose-plugin
+
+    - name: Downloading & installing Only office
+      become: true
+      shell: 
+        cmd: "{{ item }}"
+      loop:
+        - wget https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors.x86_64.rpm
+        - sudo dnf install ./onlyoffice-desktopeditors.x86_64.rpm -y
+        - rm -rf onlyoffice-desktopeditors.x86_64.rpm

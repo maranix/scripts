@@ -1,0 +1,44 @@
+- name: Fetch rustup
+  uri:
+    url: https://sh.rustup.rs
+    return_content: yes
+  register: rust_installer
+
+- name: Run rustup installer
+  shell:
+    cmd: sh -s -- -y
+    stdin: "{{ rust_installer.content }}"
+
+- name: Fetching Nodejs install script
+  uri:
+    url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh 
+    return_content: yes
+  register: node_install
+
+- name: Settings up NVM
+  shell:
+    cmd: zsh
+    stdin: '{{ node_install.content }}'
+
+- name: Installing Nodejs
+  shell:
+    cmd: /usr/bin/zsh -ic 'nvm {{ item }}'
+  loop:
+    - install node
+    - use node
+
+- name: Installing golang
+  become_user: true
+  shell:
+    cmd: "{{ item }}"
+  loop:
+    - curl -LO https://go.dev/dl/go1.19.4.linux-amd64.tar.gz
+    - rm -rf /usr/local/go
+    - tar -C /usr/local -xzf go1.19.4.linux-amd64.tar.gz
+
+- name: Cloning Flutter/Dart Repository
+  git:
+    repo: https://github.com/flutter/flutter.git
+    version: stable
+    depth: 1
+    dest: ~/.flutter
