@@ -102,6 +102,7 @@
         - config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
 
     - name: Installing Docker
+      become: true
       dnf:
         name:
         state: latest
