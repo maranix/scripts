@@ -67,7 +67,6 @@
         - languages.yaml
         - bspwm.yaml
         - alacritty.yaml
-        - eww.yaml
         - fonts.yaml
         - tools.yaml
       loop_control:
