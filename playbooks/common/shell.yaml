@@ -7,3 +7,7 @@
 - name: Installing oh-my-zsh
   shell: 
     cmd: sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+- name: Installing zsh plugins
+  shell:
+    cmd: zsh -ic "zplug install"
