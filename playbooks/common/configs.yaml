@@ -24,3 +24,20 @@
   shell:
     cmd: cp .zshrc ~/
     chdir: ~/dotfiles
+
+- name: Cloning sddm theme
+  git:
+    repo: https://github.com/catppuccin/sddm
+    dest: ~/sddm
+
+- name: Copying sddm theme
+  become: true
+  shell:
+    cmd: sudo cp -r ./src/catpuccin-mocha /usr/share/sddm/themes/
+    chdir: ~/sddm
+
+- name: Updating sddm.conf
+  become: true
+  shell:
+    cmd: sudo cp -r sddm.conf /etc/
+    chdir: ~/dotfiles
