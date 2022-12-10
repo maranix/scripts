@@ -11,7 +11,3 @@
 - name: Installing zplug
   shell:
     cmd: curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
-
-- name: Installing zsh plugins
-  shell:
-    cmd: zsh -ic "zplug install"
