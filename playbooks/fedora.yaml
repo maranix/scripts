@@ -66,8 +66,8 @@
     - name: Executing common playbooks
       include_tasks: ./common/{{ common }}
       loop:
-        - configs.yaml
         - shell.yaml
+        - configs.yaml
         - languages.yaml
         - bspwm.yaml
         - alacritty.yaml

@@ -9,16 +9,9 @@
     cmd: sh -s -- -y
     stdin: "{{ rust_installer.content }}"
 
-- name: Fetching Nodejs install script
-  uri:
-    url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh 
-    return_content: yes
-  register: node_install
-
-- name: Settings up NVM
+- name: Installing NVM
   shell:
-    cmd: zsh -i
-    stdin: '{{ node_install.content }}'
+    cmd: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
 
 - name: Installing Nodejs
   shell:
