@@ -1,0 +1,38 @@
+# ROADMAP
+
+## TODO
+- [ ] Add Playbooks for setting up development environment on Fedora 
+    - [ ] ZSH Shell
+        - [ ] OH MY ZSH
+        - [ ] ZPLUG Plugin Manager
+        - [ ] [Essential Plugins](https://github.com/unixorn/awesome-zsh-plugins)
+            - [ ] Syntax Highlighting
+            - [ ] Auto Complete Support
+            - [ ] Auto Suggestions Support
+            - [ ] FZF
+            - [ ] Ansible
+            - [ ] ZSH-BD
+    - [ ] Languages
+        - [ ] Rust
+        - [ ] Node.js
+        - [ ] Go
+        - [ ] Flutter/Dart
+    - [ ] Tools (Editors, Productivity & etc)
+        - [ ] VSCode
+        - [ ] Android Studio
+        - [ ] Neovim
+        - [ ] Docker
+        - [ ] Only Office
+- [ ] Add Playbooks for setting up development environment on Ubuntu
+    - [ ] Languages
+        - [ ] Rust
+        - [ ] Node.js
+        - [ ] Go
+        - [ ] Flutter/Dart
+    - [ ] Tools (Editors, Productivity & etc)
+        - [ ] Neovim
+        - [ ] VSCode
+        - [ ] Android Studio
+        - [ ] Docker
+        - [ ] Only Office
+- [ ] Add Github Workflow for continuously testing changes.
