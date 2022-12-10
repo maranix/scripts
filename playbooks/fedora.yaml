@@ -15,7 +15,7 @@
         - '@Printing Support'
         state: latest
 
-    - name: Installing dependencies for alacritty, bspwm, eww.
+    - name: Installing dependencies for alacritty & bspwm.
       become: true
       dnf:
         name:
@@ -35,14 +35,6 @@
           - libxcb-devel
           - libxkbcommon-devel
           - g++
-          #eww
-          - gtk3-devel
-          - gtk-layer-shell-devel
-          - pango-devel
-          - gdk-pixbuf2-devel
-          - cairo-devel
-          - glib2-devel
-          - glibc-devel
           #Neovim
           - ninja-build
         state: latest
@@ -61,6 +53,7 @@
           - firefox
           - thunar
           - gimp
+          - polybar
         state: latest
 
     - name: Executing common playbooks
