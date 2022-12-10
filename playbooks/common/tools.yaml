@@ -23,7 +23,7 @@
     depth: 1
 
 - name: Installing LazyGit
-  shell: go install github.com/jesseduffield/lazygit@latest
+  shell: zsh -ic 'go install github.com/jesseduffield/lazygit@latest'
 
 - name: Installing Cargo Edit
-  shell: /usr/bin/zsh -ic 'cargo install cargo-edit'
+  shell: zsh -ic 'cargo install cargo-edit'
