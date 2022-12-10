@@ -28,13 +28,28 @@ execute() {
 }
 
 fedora_install() {
-  if [[ $(grep -rl "max_parallel_downloads" /etc/dnf/dnf.conf) = '' ]]; then
-    update_dnf_conf
-  fi
+  local ansible
+  local dnf
 
-  sudo dnf install -y ansible git
-  
-  clear
+  ansible="$(which ansible)"
+  dnf="$(grep -rl "max_parallel_downloads" /etc/dnf/dnf.conf)"
+
+  _install_deps() {
+    if [[ "$ansible" = '' ]]; then
+      sudo dnf install -y ansible git
+    fi
+  }
+
+  _update_dnf_conf() {
+    if [[ "$dnf" = '' ]]; then
+      sudo sh -c 'echo "max_parallel_downloads=10" >> /etc/dnf/dnf.conf'
+      sudo sh -c 'echo "fastestmirror=True" >> /etc/dnf/dnf.conf'
+    fi
+  }
+
+  _update_dnf_conf
+
+  _install_deps
 
   echo "Executing playbook"
 
@@ -52,11 +67,6 @@ fedora_install() {
       ansible-playbook ./playbooks/fedora/rice.yaml --ask-become-pass
       ;;
   esac
-}
-
-update_dnf_conf() {
-  sudo sh -c 'echo "max_parallel_downloads=10" >> /etc/dnf/dnf.conf'
-  sudo sh -c 'echo "fastestmirror=True" >> /etc/dnf/dnf.conf'
 }
 
 execute "$@"
