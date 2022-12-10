@@ -7,8 +7,3 @@
 - name: Installing oh-my-zsh
   shell: 
     cmd: sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-- name: Changing default shell to zsh
-  become_user: true
-  shell:
-    cmd: chsh -s $(which zsh)
