@@ -31,13 +31,13 @@
     dest: ~/sddm
 
 - name: Copying sddm theme
-  become: true
+  become_user: true
   shell:
     cmd: sudo cp -r ./src/catpuccin-mocha /usr/share/sddm/themes/
     chdir: ~/sddm
 
 - name: Updating sddm.conf
-  become: true
+  become_user: true
   shell:
     cmd: sudo cp -r sddm.conf /etc/
     chdir: ~/dotfiles
