@@ -54,6 +54,8 @@
           - thunar
           - gimp
           - polybar
+          - htop
+          - xclip
         state: latest
 
     - name: Executing common playbooks

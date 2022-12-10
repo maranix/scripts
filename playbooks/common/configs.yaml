@@ -11,12 +11,13 @@
 
 - name: Copying dotfiles to ~/.config/
   shell:
-    cmd: cp -r {{ item }} ~/.config/{{ item }}
+    cmd: cp -r {{ item }} ~/.config/
     chdir: ~/dotfiles/
   loop:
     - bspwm
     - sxhkd
     - wallpapers
+    - polybar
     - alacritty.yml
 
 - name: Copying .zshrc from ~/dotfiles
