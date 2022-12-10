@@ -33,7 +33,7 @@
 - name: Copying sddm theme
   become_user: true
   shell:
-    cmd: sudo cp -r ./src/catpuccin-mocha /usr/share/sddm/themes/
+    cmd: sudo cp -r ./src/catppuccin-mocha /usr/share/sddm/themes/
     chdir: ~/sddm
 
 - name: Updating sddm.conf
