@@ -5,7 +5,7 @@
 
 - name: Building alacritty
   shell:
-    cmd: sh -s -- {{ item }}
+    cmd: zsh -ic "{{ item }}"
     chdir: ~/setup/alacritty
   loop:
     - rustup override set stable
