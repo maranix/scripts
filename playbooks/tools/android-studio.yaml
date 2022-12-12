@@ -1,0 +1,37 @@
+---
+- name: Android Studio Playbook
+  hosts: localhost
+  tasks:
+    - name: Checking if Android Studio is installed
+      ansible.builtin.stat:
+        path="{{ ansible_env.HOME }}/.local/bin/android-studio"
+      register: studio
+
+    - name: Fetching details
+      ansible.builtin.get_url:
+        url: https://developer.android.com/studio
+        dest: /tmp/android-studio.html
+        mode: 0755
+      when: not studio.stat.exists
+
+    - name: Extracting archive details
+      ansible.builtin.command:
+        cmd: grep -Pom1 '(https:\/\/.*android-studio.*linux.tar.gz)' /tmp/android-studio.html
+      changed_when: false
+      register: archive
+      when: not studio.stat.exists
+
+    - name: Fetching {{ archive.stdout }}
+      ansible.builtin.get_url:
+        url: "{{ archive.stdout }}"
+        dest: /tmp/android-studio.tar.gz
+        mode: 0755
+      when: not studio.stat.exists
+
+    - name: Unpacking archive to ~/.local/bin/android-studio
+      ansible.builtin.unarchive:
+        src: /tmp/android-studio.tar.gz
+        dest: "{{ ansible_env.HOME }}/.local/bin/"
+        mode: 0755
+        creates: "{{ ansible_env.HOME }}/.local/bin/android-studio"
+      when: not studio.stat.exists
