@@ -1,0 +1,16 @@
+---
+- name: Flutter Playbook
+  hosts: localhost
+  tasks:
+    - name: Checking if flutter is installed
+      ansible.builtin.stat:
+        path="{{ ansible_env.HOME }}/.local/bin/flutter"
+      register: flutter
+
+    - name: Cloning Flutter
+      ansible.builtin.git:
+        repo: https://github.com/flutter/flutter.git
+        dest: "{{ ansible_env.HOME }}/.local/bin/flutter"
+        version: stable
+        depth: 1
+      when: not flutter.stat.exists

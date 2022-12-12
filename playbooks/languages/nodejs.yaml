@@ -1,0 +1,28 @@
+---
+- name: NodeJS Playbook
+  hosts: localhost
+  tasks:
+    - name: Checking if nvm is installed
+      ansible.builtin.stat:
+        path="{{ ansible_env.HOME }}/.nvm"
+      register: nvm
+
+    - name: Fetching nvm
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh
+        dest: /tmp/nvm.sh
+        mode: 0755
+      when: not nvm.stat.exists
+
+    - name: Installing nvm
+      ansible.builtin.script: /tmp/nvm.sh
+      args:
+        creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+      when: not nvm.stat.exists
+
+    - name: Installing NodeJS
+      ansible.builtin.command:
+      args:
+        cmd: "{{ ansible_env.SHELL }} -ic nvm install node && nvm use node"
+        creates: "{{ ansible_env.HOME }}/.nvm/versions/node"
+      when: not nvm.stat.exists

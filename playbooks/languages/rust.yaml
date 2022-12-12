@@ -1,0 +1,14 @@
+---
+- name: Rust Playbook
+  hosts: localhost
+  tasks:
+    - name: Fetching rustup
+      ansible.builtin.get_url:
+        url: https://sh.rustup.rs
+        dest: /tmp/rustup.sh
+        mode: 0755
+
+    - name: Installing rust
+      ansible.builtin.script: /tmp/rustup.sh -y
+      args:
+        creates: ~/.cargo && ~/.rustup

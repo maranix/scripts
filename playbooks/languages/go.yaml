@@ -1,0 +1,36 @@
+---
+- name: GoLang Playbook
+  hosts: localhost
+  tasks:
+    - name: Checking if golang is installed
+      ansible.builtin.stat: path=/usr/local/go/bin/
+      register: go
+
+    - name: Contacting go.dev
+      ansible.builtin.get_url:
+        url: https://go.dev/dl/
+        dest: /tmp/godev
+        mode: 0755
+      when: not go.stat.exists
+
+    - name: Getting latest version
+      ansible.builtin.command:
+        cmd: grep -Pom1 '(go.*linux-amd64.tar.gz)' /tmp/godev
+      changed_when: false
+      register: go_version
+      when: not go.stat.exists
+
+    - name: Downloading archive {{ go_version.stdout }}
+      ansible.builtin.get_url:
+        url: https://go.dev/dl/{{ go_version.stdout }}
+        dest: /tmp/{{ go_version.stdout }}
+        mode: 0755
+      when: not go.stat.exists
+
+    - name: Installing go
+      become: true
+      ansible.builtin.unarchive:
+        src: /tmp/{{ go_version.stdout }}
+        dest: /usr/local/
+        creates: /usr/local/go/bin
+      when: not go.stat.exists
