@@ -48,5 +48,5 @@
 
     - name: Changing default shell to zsh
       become: true
-      ansible.builtin.command: bash -c "chsh -s $(which zsh) {{ current_user.stdout }}"
+      ansible.builtin.command: "{{ ansible_env.SHELL }} -c \"chsh -s $(which zsh) {{ current_user.stdout }}\""
       changed_when: false
