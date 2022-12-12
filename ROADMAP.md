@@ -5,7 +5,7 @@
     - [ ] ZSH Shell
         - [ ] OH MY ZSH
         - [ ] ZPLUG Plugin Manager
-        - [ ] [Essential Plugins](https://github.com/unixorn/awesome-zsh-plugins)
+        - [ ] [Essential Plugins](https://github.com/unixorn/awesome-zsh-plugins) (Following are defined in .zshrc & automatically installed zplug if not found)
             - [ ] Syntax Highlighting
             - [ ] Auto Complete Support
             - [ ] Auto Suggestions Support

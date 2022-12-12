@@ -1,0 +1,52 @@
+---
+- name: ZSH Shell Playbook
+  hosts: localhost
+  tasks:
+    - name: Register current user (workaround to change default shell)
+      ansible.builtin.command: whoami
+      changed_when: false
+      register: current_user
+
+    - name: Installing ZSH
+      become: true
+      ansible.builtin.dnf:
+        name: zsh
+
+    - name: Checking if oh-my-zsh exists
+      ansible.builtin.stat: path=~/.oh-my-zsh
+      register: omz
+
+    - name: Fetching oh-my-zsh installer script
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+        dest: /tmp/omz.sh
+        mode: 0755
+      when: not omz.stat.exists
+
+    - name: Installing oh-my-zsh
+      ansible.builtin.script: /tmp/omz.sh
+      args:
+        creates: ~/.oh-my-zsh
+      when: not omz.stat.exists
+
+    - name: Checking if zplug exists
+      ansible.builtin.stat: path=~/.zplug
+      register: zplug
+
+    - name: Fetching zplug installer script
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/zplug/installer/master/installer.zsh
+        dest: /tmp/zplug.sh
+        mode: 0755
+      when: not zplug.stat.exists
+
+    - name: Installing zplug
+      ansible.builtin.script: /tmp/zplug.sh
+      args:
+        creates: ~/.zplug
+      when: not zplug.stat.exists
+
+    - name: Changing default shell to zsh
+      become: true
+      ansible.builtin.command: bash -c "chsh -s $(which zsh) {{ current_user.stdout }}"
+      changed_when: false
