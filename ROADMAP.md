@@ -2,37 +2,37 @@
 
 ## TODO
 - [ ] Add Playbooks for setting up development environment on Fedora 
-    - [ ] ZSH Shell
-        - [ ] OH MY ZSH
-        - [ ] ZPLUG Plugin Manager
-        - [ ] [Essential Plugins](https://github.com/unixorn/awesome-zsh-plugins) (Following are defined in .zshrc & automatically installed zplug if not found)
-            - [ ] Syntax Highlighting
-            - [ ] Auto Complete Support
-            - [ ] Auto Suggestions Support
-            - [ ] FZF
-            - [ ] Ansible
-            - [ ] ZSH-BD
-    - [ ] Languages
-        - [ ] Rust
-        - [ ] Node.js
-        - [ ] Go
-        - [ ] Flutter/Dart
+    - [x] ZSH Shell
+        - [x] OH MY ZSH
+        - [x] ZPLUG Plugin Manager
+        - [x] [Essential Plugins](https://github.com/unixorn/awesome-zsh-plugins) (Following are defined in .zshrc & automatically installed zplug if not found)
+            - [x] Syntax Highlighting
+            - [x] Auto Complete Support
+            - [x] Auto Suggestions Support
+            - [x] FZF
+            - [x] Ansible
+            - [x] ZSH-BD
+    - [x] Languages
+        - [x] Rust
+        - [x] Node.js
+        - [x] Go
+        - [x] Flutter/Dart
     - [ ] Tools (Editors, Productivity & etc)
         - [ ] VSCode
-        - [ ] Android Studio
+        - [x] Android Studio
         - [ ] Neovim
         - [ ] Docker
         - [ ] Only Office
 - [ ] Add Playbooks for setting up development environment on Ubuntu
-    - [ ] Languages
-        - [ ] Rust
-        - [ ] Node.js
-        - [ ] Go
-        - [ ] Flutter/Dart
+    - [x] Languages
+        - [x] Rust
+        - [x] Node.js
+        - [x] Go
+        - [x] Flutter/Dart
     - [ ] Tools (Editors, Productivity & etc)
         - [ ] Neovim
         - [ ] VSCode
-        - [ ] Android Studio
+        - [x] Android Studio
         - [ ] Docker
         - [ ] Only Office
 - [ ] Add Github Workflow for continuously testing changes.
