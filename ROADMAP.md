@@ -1,7 +1,7 @@
 # ROADMAP
 
 ## TODO
-- [ ] Add Playbooks for setting up development environment on Fedora 
+- [x] Add Playbooks for setting up development environment on Fedora 
     - [x] ZSH Shell
         - [x] OH MY ZSH
         - [x] ZPLUG Plugin Manager
@@ -17,12 +17,12 @@
         - [x] Node.js
         - [x] Go
         - [x] Flutter/Dart
-    - [ ] Tools (Editors, Productivity & etc)
-        - [ ] VSCode
+    - [x] Tools (Editors, Productivity & etc)
+        - [x] VSCode
         - [x] Android Studio
-        - [ ] Neovim
-        - [ ] Docker
-        - [ ] Only Office
+        - [x] Neovim
+        - [x] Docker
+        - [x] Only Office
 - [ ] Add Playbooks for setting up development environment on Ubuntu
     - [x] Languages
         - [x] Rust
