@@ -1,0 +1,28 @@
+---
+- name: Android Studio Playbook
+  hosts: localhost
+  tasks:
+    - name: Checking if Only Office is installed
+      ansible.builtin.stat:
+        path="{{ ansible_env.HOME }}/.local/bin/only-office"
+      register: office
+
+    - name: Downloading Only Office
+      ansible.builtin.get_url:
+        url: https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors.x86_64.rpm
+        dest: /tmp/only-office.rpm
+        mode: 0755
+      when: not office.stat.exists
+
+    - name: Installing Only Office
+      become: true
+      ansible.builtin.dnf:
+        name: /tmp/only-office.rpm
+        disable_gpg_check: true
+      register: install
+
+    - name: Cleaning up
+      ansible.builtin.file:
+        path: /tmp/only-office.rpm
+        state: absent
+      when: not install.failed

@@ -1,0 +1,49 @@
+---
+- name: Neovim Playbook
+  hosts: localhost
+  tasks:
+    - name: Installing prerequisites
+      become: true
+      ansible.builtin.dnf:
+        name:
+          - ninja-build
+          - libtool
+          - autoconf
+          - automake
+          - cmake
+          - gcc
+          - gcc-c++
+          - make
+          - pkgconfig
+          - unzip
+          - patch
+          - gettext
+          - curl
+        state: present
+
+    - name: Cloning Neovim
+      ansible.builtin.git:
+        repo: https://github.com/neovim/neovim
+        dest: /tmp/neovim
+        version: stable
+        depth: 1
+
+    - name: Building Neovim
+      ansible.builtin.command:
+        cmd: make CMAKE_BUILD_TYPE=Release
+        chdir: /tmp/neovim
+        creates: /tmp/neovim/build/bin/nvim
+
+    - name: Installing Neovim
+      become: true
+      ansible.builtin.command:
+        cmd: sudo make install
+        chdir: /tmp/neovim
+        creates: /usr/local/neovim
+      register: install
+
+    - name: Cleaning up
+      ansible.builtin.file:
+        path: /tmp/neovim
+        state: absent
+      when: not install.failed

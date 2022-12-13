@@ -1,0 +1,38 @@
+---
+- name: Docker Playbook
+  hosts: localhost
+  tasks:
+    - name: Register current user
+      ansible.builtin.command: whoami
+      changed_when: false
+      register: current_user
+
+    - name: Setting up Docker Repository
+      become: true
+      ansible.builtin.command:
+        cmd: sudo dnf {{ item }}
+      loop:
+        - install dnf-plugins-core
+        - config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+      changed_when: false
+
+    - name: Installing Docker
+      become: true
+      ansible.builtin.dnf:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
+        state: present
+
+    - name: Adding Docker to usergroup & enabling service
+      become: true
+      ansible.builtin.command:
+        cmd: sudo {{ item }}
+      loop:
+        - usermod -aG docker {{ current_user.stdout }}
+        - systemctl enable docker.service
+        - systemctl enable containerd.service
+        - systemctl start docker
+      changed_when: false

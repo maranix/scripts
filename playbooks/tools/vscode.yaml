@@ -1,0 +1,21 @@
+---
+- name: Visual Studio Code Playbook
+  hosts: localhost
+  tasks:
+    - name: Downloading VSCode
+      ansible.builtin.get_url:
+        url: https://code.visualstudio.com/sha/download?build=stable&os=linux-rpm-x64
+        dest: /tmp/code.rpm
+        mode: 0755
+
+    - name: Installing VSCode
+      become: true
+      ansible.builtin.dnf:
+        name: /tmp/code.rpm
+      register: install
+
+    - name: Cleaning up
+      ansible.builtin.file:
+        path: /tmp/code.rpm
+        state: absent
+      when: not install.failed
