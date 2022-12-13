@@ -1,0 +1,24 @@
+---
+- name: NerdFonts Playbook
+  hosts: localhost
+  tasks:
+    - name: Cloning NerdFonts
+      ansible.builtin.command:
+        cmd: "{{ ansible_env.SHELL }} -c \"{{ item }}\""
+        chdir: /tmp/
+        creates: "{{ ansible_env.HOME }}/.local/share/fonts/nerdfonts"
+      loop:
+        - git clone --filter=blob:none --sparse git@github.com:ryanoasis/nerd-fonts
+        - cd nerd-fonts && git sparse-checkout add patched-fonts/JetBrainsMono
+        - cd nerd-fonts && git sparse-checkout add patched-fonts/Noto
+
+    - name: Installing Fonts
+      ansible.builtin.command:
+        cmd: "{{ ansible_env.SHELL }} -c \"./install.sh {{ item }}\""
+        chdir: /tmp/nerd-fonts
+      args:
+        creates: "{{ ansible_env.HOME }}/.local/share/fonts/NerdFonts"
+      changed_when: false
+      loop:
+        - JetBrainsMono
+        - Noto
