@@ -7,6 +7,11 @@
         path=/usr/local/bin/nvim
       register: nvim
 
+    - name: Checking if Packer is already installed
+      ansible.builtin.stat:
+        path="{{ ansible_env.HOME }}/.local/share/nvim/site/pack/packer/start/packer.nvim"
+      register: packer
+
     - name: Installing prerequisites
       become: true
       ansible.builtin.dnf:
@@ -50,6 +55,14 @@
         creates: /usr/local/bin/nvim
       register: install
       when: not nvim.stat.exists
+
+    - name: Installing Packer
+      ansible.builtin.git:
+        repo: https://github.com/wbthomason/packer.nvim
+        dest: "{{ ansible_env.HOME }}/.local/share/nvim/site/pack/packer/start/packer.nvim"
+        depth: 1
+        version: master
+      when: not packer.stat.exists
 
     - name: Cleaning up
       ansible.builtin.file:
