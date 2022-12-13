@@ -1,0 +1,32 @@
+---
+- name: Setting up development environment on Fedora
+  hosts: localhost
+  gather_facts: false
+
+# Languages Playbooks
+- ansible.builtin.import_playbook: "../languages/rust.yaml"
+  name: Rust
+- ansible.builtin.import_playbook: "../languages/nodejs.yaml"
+  name: NVM & Node.js
+- ansible.builtin.import_playbook: "../languages/go.yaml"
+  name: GoLang
+- ansible.builtin.import_playbook: "../languages/flutter.yaml"
+  name: Flutter
+
+# Tools Playbooks
+- ansible.builtin.import_playbook: "../tools/vscode.yaml"
+  name: VSCode
+- ansible.builtin.import_playbook: "../tools/android-studio.yaml"
+  name: Android Studio
+- ansible.builtin.import_playbook: "../tools/only-office.yaml"
+  name: Only Office
+- ansible.builtin.import_playbook: "../tools/docker.yaml"
+  name: Docker
+- ansible.builtin.import_playbook: "../tools/neovim.yaml"
+  name: Neovim
+
+# Common Playbooks
+- ansible.builtin.import_playbook: "../common/fonts.yaml"
+  name: NerdFonts
+- ansible.builtin.import_playbook: "../common/zsh.yaml"
+  name: OMZ Shell
