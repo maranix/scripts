@@ -34,3 +34,10 @@
         dest: /usr/local/
         creates: /usr/local/go/bin
       when: not go.stat.exists
+      register: install
+
+    - name: Cleaning up
+      ansible.builtin.file:
+        path: /tmp/{{ go_version.stdout }}
+        state: absent
+      when: not install.failed

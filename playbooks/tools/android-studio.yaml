@@ -35,3 +35,10 @@
         mode: 0755
         creates: "{{ ansible_env.HOME }}/.local/bin/android-studio"
       when: not studio.stat.exists
+      register: install
+
+    - name: Cleaning up
+      ansible.builtin.file:
+        path: /tmp/android-studio.tar.gz
+        state: absent
+      when: not install.failed

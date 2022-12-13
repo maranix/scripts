@@ -22,3 +22,10 @@
       loop:
         - JetBrainsMono
         - Noto
+      register: install
+
+    - name: Cleaning up
+      ansible.builtin.file:
+        path: /tmp/nerd-fonts
+        state: absent
+      when: not install.failed

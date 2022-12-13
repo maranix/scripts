@@ -26,3 +26,10 @@
         cmd: "{{ ansible_env.SHELL }} -ic nvm install node && nvm use node"
         creates: "{{ ansible_env.HOME }}/.nvm/versions/node"
       when: not nvm.stat.exists
+      register: install
+
+    - name: Cleaning up
+      ansible.builtin.file:
+        path: /tmp/nvm.sh
+        state: absent
+      when: not install.failed

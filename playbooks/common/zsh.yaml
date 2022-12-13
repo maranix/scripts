@@ -28,6 +28,7 @@
       args:
         creates: ~/.oh-my-zsh
       when: not omz.stat.exists
+      register: omz_install
 
     - name: Checking if zplug exists
       ansible.builtin.stat: path=~/.zplug
@@ -45,8 +46,18 @@
       args:
         creates: ~/.zplug
       when: not zplug.stat.exists
+      register: zplug_install
 
     - name: Changing default shell to zsh
       become: true
       ansible.builtin.command: "{{ ansible_env.SHELL }} -c \"chsh -s $(which zsh) {{ current_user.stdout }}\""
       changed_when: false
+
+    - name: Cleaning up
+      ansible.builtin.file:
+        path: /tmp/{{ item }}
+        state: absent
+      loop:
+        - omz.sh
+        - zplug.sh
+      when: not omz_install.failed and not zplug_install.failed

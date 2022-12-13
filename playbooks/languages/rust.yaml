@@ -12,3 +12,10 @@
       ansible.builtin.script: /tmp/rustup.sh -y
       args:
         creates: ~/.cargo && ~/.rustup
+      register: install
+
+    - name: Cleaning up
+      ansible.builtin.file:
+        path: /tmp/rustup.sh
+        state: absent
+      when: not install.failed
