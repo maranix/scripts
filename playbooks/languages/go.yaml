@@ -40,4 +40,4 @@
       ansible.builtin.file:
         path: /tmp/{{ go_version.stdout }}
         state: absent
-      when: not install.failed
+      when: not install is skipped and not install is failed
