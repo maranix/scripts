@@ -4,7 +4,7 @@
   tasks:
     - name: Checking if Only Office is installed
       ansible.builtin.stat:
-        path="{{ ansible_env.HOME }}/.local/bin/only-office"
+        path=/usr/bin/onlyoffice-desktopeditors
       register: office
 
     - name: Downloading Only Office
@@ -20,9 +20,10 @@
         name: /tmp/only-office.rpm
         disable_gpg_check: true
       register: install
+      when: not office.stat.exists
 
     - name: Cleaning up
       ansible.builtin.file:
         path: /tmp/only-office.rpm
         state: absent
-      when: not install.failed
+      when: not install is skipped and not install is failed

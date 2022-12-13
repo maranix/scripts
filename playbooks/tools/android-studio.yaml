@@ -41,4 +41,4 @@
       ansible.builtin.file:
         path: /tmp/android-studio.tar.gz
         state: absent
-      when: not install.failed
+      when: not install is skipped and not install is failed

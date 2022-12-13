@@ -2,20 +2,27 @@
 - name: Visual Studio Code Playbook
   hosts: localhost
   tasks:
+    - name: Checking if VSCode is already installed
+      ansible.builtin.stat:
+        path=/usr/bin/code
+      register: vscode
+
     - name: Downloading VSCode
       ansible.builtin.get_url:
         url: https://code.visualstudio.com/sha/download?build=stable&os=linux-rpm-x64
         dest: /tmp/code.rpm
         mode: 0755
+      when: not vscode.stat.exists
 
     - name: Installing VSCode
       become: true
       ansible.builtin.dnf:
         name: /tmp/code.rpm
+      when: not vscode.stat.exists
       register: install
 
     - name: Cleaning up
       ansible.builtin.file:
         path: /tmp/code.rpm
         state: absent
-      when: not install.failed
+      when: not install is skipped and not install is failed

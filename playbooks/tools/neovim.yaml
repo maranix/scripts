@@ -2,6 +2,11 @@
 - name: Neovim Playbook
   hosts: localhost
   tasks:
+    - name: Checking if Neovim is already installed
+      ansible.builtin.stat:
+        path=/usr/local/bin/nvim
+      register: nvim
+
     - name: Installing prerequisites
       become: true
       ansible.builtin.dnf:
@@ -20,6 +25,7 @@
           - gettext
           - curl
         state: present
+      when: not nvim.stat.exists
 
     - name: Cloning Neovim
       ansible.builtin.git:
@@ -27,23 +33,26 @@
         dest: /tmp/neovim
         version: stable
         depth: 1
+      when: not nvim.stat.exists
 
     - name: Building Neovim
       ansible.builtin.command:
         cmd: make CMAKE_BUILD_TYPE=Release
         chdir: /tmp/neovim
         creates: /tmp/neovim/build/bin/nvim
+      when: not nvim.stat.exists
 
     - name: Installing Neovim
       become: true
       ansible.builtin.command:
         cmd: sudo make install
         chdir: /tmp/neovim
-        creates: /usr/local/neovim
+        creates: /usr/local/bin/nvim
       register: install
+      when: not nvim.stat.exists
 
     - name: Cleaning up
       ansible.builtin.file:
         path: /tmp/neovim
         state: absent
-      when: not install.failed
+      when: not install is skipped and not install is failed
