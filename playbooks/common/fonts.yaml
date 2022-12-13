@@ -2,6 +2,11 @@
 - name: NerdFonts Playbook
   hosts: localhost
   tasks:
+    - name: Checking if NerdFonts repo is available
+      ansible.builtin.stat:
+        path=/tmp/nerd-fonts
+      register: fonts
+
     - name: Cloning NerdFonts
       ansible.builtin.command:
         cmd: "{{ ansible_env.SHELL }} -c \"{{ item }}\""
@@ -11,6 +16,7 @@
         - git clone --filter=blob:none --sparse git@github.com:ryanoasis/nerd-fonts
         - cd nerd-fonts && git sparse-checkout add patched-fonts/JetBrainsMono
         - cd nerd-fonts && git sparse-checkout add patched-fonts/Noto
+      when: not fonts.stat.exists
 
     - name: Installing Fonts
       ansible.builtin.command:
@@ -22,10 +28,8 @@
       loop:
         - JetBrainsMono
         - Noto
-      register: install
 
     - name: Cleaning up
       ansible.builtin.file:
         path: /tmp/nerd-fonts
         state: absent
-      when: not install.failed

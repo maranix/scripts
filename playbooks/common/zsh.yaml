@@ -60,4 +60,4 @@
       loop:
         - omz.sh
         - zplug.sh
-      when: not omz_install.failed and not zplug_install.failed
+      when: not omz_install is skipped and not omz_install is failed and not zplug_install is skipped and not zplug_install is failed
