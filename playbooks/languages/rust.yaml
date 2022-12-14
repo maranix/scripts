@@ -2,9 +2,9 @@
 - name: Rust Playbook
   hosts: localhost
   tasks:
-    - name: Checking if nvm is installed
+    - name: Checking if rustup is installed
       ansible.builtin.stat:
-        path="{{ ansible_env.HOME }}/.rustup"
+        path="{{ ansible_env.HOME }}/.local/bin/rustup"
       register: rustup
 
     - name: Fetching rustup
@@ -15,9 +15,12 @@
       when: not rustup.stat.exists
 
     - name: Installing rust
+      environment:
+        CARGO_HOME: "{{ ansible_env.HOME }}/.local/bin/cargo"
+        RUSTUP_HOME: "{{ ansible_env.HOME }}/.local/bin/rustup"
       ansible.builtin.script: /tmp/rustup.sh -y
       args:
-        creates: ~/.cargo && ~/.rustup
+        creates: "{{ ansible_env.HOME }}/.local/bin/cargo"
       register: install
       when: not rustup.stat.exists
 
