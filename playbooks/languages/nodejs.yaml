@@ -23,7 +23,7 @@
     - name: Installing NodeJS
       ansible.builtin.command:
       args:
-        cmd: "{{ ansible_env.SHELL }} -ic \"nvm install --lts && nvm use --lts\""
+        cmd: "{{ ansible_env.SHELL }} -c \"nvm install --lts && nvm use --lts\""
         creates: "{{ ansible_env.HOME }}/.nvm/versions/node"
       when: not nvm.stat.exists
       register: install
