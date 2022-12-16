@@ -35,13 +35,13 @@ fedora_install() {
   dnf="$(grep -rl "max_parallel_downloads" /etc/dnf/dnf.conf)"
 
   _install_deps() {
-    if [[ "$ansible" = '' ]]; then
+    if [ "$ansible" = '' ]; then
       sudo dnf install -y ansible git
     fi
   }
 
   _update_dnf_conf() {
-    if [[ "$dnf" = '' ]]; then
+    if [ "$dnf" = '' ]; then
       sudo sh -c 'echo "max_parallel_downloads=10" >> /etc/dnf/dnf.conf'
       sudo sh -c 'echo "fastestmirror=True" >> /etc/dnf/dnf.conf'
     fi
