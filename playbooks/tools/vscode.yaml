@@ -18,6 +18,7 @@
       become: true
       ansible.builtin.dnf:
         name: /tmp/code.rpm
+        disable_gpg_check: true
       when: not vscode.stat.exists
       register: install
 
