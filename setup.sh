@@ -5,7 +5,7 @@ set -e
 default=dev_env
 SETUP_TYPE="${1:-$default}"
 OS="$( \
-  grep -m1 "ID=" /etc/os-release \
+  grep '^ID=.*' /etc/os-release \
   | sed 's/ID=//')"
 
 echo "Current OS is $OS"
