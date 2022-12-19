@@ -2,6 +2,10 @@
 - name: Docker Playbook
   hosts: localhost
   tasks:
+    - name: Registering OS ID
+      ansible.builtin.command: "{{ ansible_env.SHELL }} -c \"grep '^ID=.*' /etc/os-release | sed 's/ID=//'\""
+      register: os
+
     - name: Register current user
       ansible.builtin.command: whoami
       changed_when: false
@@ -15,8 +19,41 @@
         - install dnf-plugins-core
         - config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
       changed_when: false
+      when: os.stdout == "ubuntu"
 
-    - name: Installing Docker
+    - name: Setting up docker repository key for ubuntu
+      become: true
+      ansible.builtin.command:
+        cmd: "{{ ansible_env.SHELL }} -ic \"\
+              sudo mkdir -p /etc/apt/keyrings \
+              curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+              \""
+      when: os.stdout == "ubuntu"
+
+    - name: Setting up docker repository for ubuntu
+      become: true
+      ansible.builtin.command:
+        cmd: "{{ ansible_env.SHELL }} -ic \"\
+              \"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+              \""
+      when: os.stdout == "ubuntu"
+
+    - name: Installing Docker dependencies for ubuntu
+      become: true
+      ansible.builtin.apt:
+        name:
+          - ca-cerificates
+          - curl
+          - gnupg
+          - lsb-release
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
+        state: present
+      when: os.stdout == "ubuntu"
+
+    - name: Installing Docker dependencies for fedora
       become: true
       ansible.builtin.dnf:
         name:
@@ -25,6 +62,7 @@
           - containerd.io
           - docker-compose-plugin
         state: present
+      when: os.stdout == "fedora"
 
     - name: Adding Docker to usergroup & enabling service
       become: true

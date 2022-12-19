@@ -2,15 +2,26 @@
 - name: ZSH Shell Playbook
   hosts: localhost
   tasks:
+    - name: Registering OS ID
+      ansible.builtin.command: "{{ ansible_env.SHELL }} -c \"grep '^ID=.*' /etc/os-release | sed 's/ID=//'\""
+      register: os
+
     - name: Register current user (workaround to change default shell)
       ansible.builtin.command: whoami
       changed_when: false
       register: current_user
 
-    - name: Installing ZSH
+    - name: Installing ZSH on fedora
       become: true
       ansible.builtin.dnf:
         name: zsh
+      when: os.stdout == "fedora"
+
+    - name: Installing ZSH on ubuntu
+      become: true
+      ansible.builtin.apt:
+        name: zsh
+      when: os.stdout == "ubuntu"
 
     - name: Checking if oh-my-zsh exists
       ansible.builtin.stat: path=~/.oh-my-zsh

@@ -2,6 +2,10 @@
 - name: Android Studio Playbook
   hosts: localhost
   tasks:
+    - name: Registering OS ID
+      ansible.builtin.command: "{{ ansible_env.SHELL }} -c \"grep '^ID=.*' /etc/os-release | sed 's/ID=//'\""
+      register: os
+
     - name: Checking if Android Studio is installed
       ansible.builtin.stat:
         path="{{ ansible_env.HOME }}/.local/bin/android-studio"
@@ -36,6 +40,24 @@
         creates: "{{ ansible_env.HOME }}/.local/bin/android-studio"
       when: not studio.stat.exists
       register: install
+
+    - name: Installing dependencies for ubuntu
+      ansible.builtin.apt:
+        name:
+          - libc6:i386
+          - libncurses5:i386
+          - libstdc++6:i386
+          - lib32z1
+          - libbz2-1.0:i386
+      when: os.stdout == "ubuntu"
+
+    - name: Installing dependencies for fedora
+      ansible.builtin.dnf:
+        name:
+          - zlib.i686
+          - ncurses-libs.i686
+          - bzip2-lib.i686
+      when: os.stdout == "fedora"
 
     - name: Cleaning up
       ansible.builtin.file:

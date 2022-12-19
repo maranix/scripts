@@ -2,6 +2,10 @@
 - name: Android Studio Playbook
   hosts: localhost
   tasks:
+    - name: Registering OS ID
+      ansible.builtin.command: "{{ ansible_env.SHELL }} -c \"grep '^ID=.*' /etc/os-release | sed 's/ID=//'\""
+      register: os
+
     - name: Checking if Only Office is installed
       ansible.builtin.stat:
         path=/usr/bin/onlyoffice-desktopeditors
@@ -9,10 +13,17 @@
 
     - name: Downloading Only Office
       ansible.builtin.get_url:
+        url: https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb
+        dest: /tmp/only-office.deb
+        mode: 0755
+      when: not office.stat.exists and os.stdout == "ubuntu"
+
+    - name: Downloading Only Office
+      ansible.builtin.get_url:
         url: https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors.x86_64.rpm
         dest: /tmp/only-office.rpm
         mode: 0755
-      when: not office.stat.exists
+      when: not office.stat.exists and os.stdout == "fedora"
 
     - name: Installing Only Office
       become: true
@@ -20,10 +31,24 @@
         name: /tmp/only-office.rpm
         disable_gpg_check: true
       register: install
-      when: not office.stat.exists
+      when: not office.stat.exists and os.stdout == "fedora"
+
+    - name: Installing Only Office
+      become: true
+      ansible.builtin.apt:
+        name: /tmp/only-office.deb
+        allow_unauthenticated: true
+      register: install
+      when: not office.stat.exists and os.stdout == "ubuntu"
 
     - name: Cleaning up
       ansible.builtin.file:
         path: /tmp/only-office.rpm
         state: absent
-      when: not install is skipped and not install is failed
+      when: not install is skipped and not install is failed os.stdout == "fedora"
+
+    - name: Cleaning up
+      ansible.builtin.file:
+        path: /tmp/only-office.deb
+        state: absent
+      when: not install is skipped and not install is failed os.stdout == "ubuntu"

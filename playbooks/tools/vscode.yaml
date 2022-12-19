@@ -2,6 +2,10 @@
 - name: Visual Studio Code Playbook
   hosts: localhost
   tasks:
+    - name: Registering OS ID
+      ansible.builtin.command: "{{ ansible_env.SHELL }} -c \"grep '^ID=.*' /etc/os-release | sed 's/ID=//'\""
+      register: os
+
     - name: Checking if VSCode is already installed
       ansible.builtin.stat:
         path=/usr/bin/code
@@ -12,18 +16,39 @@
         url: https://code.visualstudio.com/sha/download?build=stable&os=linux-rpm-x64
         dest: /tmp/code.rpm
         mode: 0755
-      when: not vscode.stat.exists
+      when: not vscode.stat.exists and os.stdout == "fedora"
 
     - name: Installing VSCode
       become: true
       ansible.builtin.dnf:
         name: /tmp/code.rpm
         disable_gpg_check: true
-      when: not vscode.stat.exists
+      when: not vscode.stat.exists and os.stdout == "fedora"
       register: install
 
     - name: Cleaning up
       ansible.builtin.file:
         path: /tmp/code.rpm
         state: absent
-      when: not install is skipped and not install is failed
+      when: not install is skipped and not install is failed and os.stdout == "fedora"
+
+    - name: Downloading VSCode
+      ansible.builtin.get_url:
+        url: https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
+        dest: /tmp/code.deb
+        mode: 0755
+      when: not vscode.stat.exists and os.stdout == "ubuntu"
+
+    - name: Installing VSCode
+      become: true
+      ansible.builtin.apt:
+        name: /tmp/code.deb
+        disable_gpg_check: true
+      when: not vscode.stat.exists and os.stdout == "ubuntu"
+      register: install
+
+    - name: Cleaning up
+      ansible.builtin.file:
+        path: /tmp/code.apt
+        state: absent
+      when: not install is skipped and not install is failed and os.stdout == "ubuntu"
