@@ -42,6 +42,7 @@
       register: install
 
     - name: Installing dependencies for ubuntu
+      become: true
       ansible.builtin.apt:
         name:
           - libc6:i386
@@ -49,9 +50,10 @@
           - libstdc++6:i386
           - lib32z1
           - libbz2-1.0:i386
-      when: os.stdout == "ubuntu"
+      when: os.stdout == "ubuntu" or os.stdout == "pop"
 
     - name: Installing dependencies for fedora
+      become: true
       ansible.builtin.dnf:
         name:
           - zlib.i686

@@ -37,18 +37,18 @@
         url: https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
         dest: /tmp/code.deb
         mode: 0755
-      when: not vscode.stat.exists and os.stdout == "ubuntu"
+      when: not vscode.stat.exists and os.stdout == "ubuntu" or os.stdout == "pop"
 
     - name: Installing VSCode
       become: true
       ansible.builtin.apt:
-        name: /tmp/code.deb
-        disable_gpg_check: true
-      when: not vscode.stat.exists and os.stdout == "ubuntu"
+        deb: /tmp/code.deb
+        allow_unauthenticated: true
+      when: not vscode.stat.exists and os.stdout == "ubuntu" or os.stdout == "pop"
       register: install
 
     - name: Cleaning up
       ansible.builtin.file:
-        path: /tmp/code.apt
+        path: /tmp/code.deb
         state: absent
-      when: not install is skipped and not install is failed and os.stdout == "ubuntu"
+      when: not install is skipped and not install is failed and os.stdout == "ubuntu" or os.stdout == "pop"

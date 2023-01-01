@@ -16,7 +16,7 @@
         url: https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb
         dest: /tmp/only-office.deb
         mode: 0755
-      when: not office.stat.exists and os.stdout == "ubuntu"
+      when: not office.stat.exists and os.stdout == "ubuntu" or os.stdout == "pop"
 
     - name: Downloading Only Office
       ansible.builtin.get_url:
@@ -36,19 +36,19 @@
     - name: Installing Only Office
       become: true
       ansible.builtin.apt:
-        name: /tmp/only-office.deb
+        deb: /tmp/only-office.deb
         allow_unauthenticated: true
       register: install
-      when: not office.stat.exists and os.stdout == "ubuntu"
+      when: not office.stat.exists and os.stdout == "ubuntu" or os.stdout == "pop"
 
     - name: Cleaning up
       ansible.builtin.file:
         path: /tmp/only-office.rpm
         state: absent
-      when: not install is skipped and not install is failed os.stdout == "fedora"
+      when: not install is skipped and not install is failed and os.stdout == "fedora"
 
     - name: Cleaning up
       ansible.builtin.file:
         path: /tmp/only-office.deb
         state: absent
-      when: not install is skipped and not install is failed os.stdout == "ubuntu"
+      when: not install is skipped and not install is failed and os.stdout == "ubuntu" or os.stdout == "pop"

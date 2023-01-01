@@ -21,7 +21,7 @@
       become: true
       ansible.builtin.apt:
         name: zsh
-      when: os.stdout == "ubuntu"
+      when: os.stdout == "ubuntu" or os.stdout == "pop"
 
     - name: Checking if oh-my-zsh exists
       ansible.builtin.stat: path=~/.oh-my-zsh

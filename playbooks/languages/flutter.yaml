@@ -2,6 +2,10 @@
 - name: Flutter Playbook
   hosts: localhost
   tasks:
+    - name: Registering OS ID
+      ansible.builtin.command: "{{ ansible_env.SHELL }} -c \"grep '^ID=.*' /etc/os-release | sed 's/ID=//'\""
+      register: os
+
     - name: Checking if flutter is installed
       ansible.builtin.stat:
         path="{{ ansible_env.HOME }}/.local/bin/flutter"
@@ -14,3 +18,27 @@
         version: stable
         depth: 1
       when: not flutter.stat.exists
+
+    - name: Installing dependencies for ubuntu
+      become: true
+      ansible.builtin.apt:
+        name:
+          - clang
+          - cmake
+          - ninja-build
+          - pkg-config
+          - libgtk-3-dev
+          - liblzma-dev
+      when: os.stdout == "ubuntu" or os.stdout == "pop"
+
+    - name: Installing dependencies for fedora
+      become: true
+      ansible.builtin.dnf:
+        name:
+          - clang
+          - cmake
+          - ninja-build
+          - pkgconfig
+          - gtk3-devel
+          - xz-devel
+      when: os.stdout == "fedora"

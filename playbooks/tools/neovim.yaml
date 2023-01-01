@@ -2,6 +2,10 @@
 - name: Neovim Playbook
   hosts: localhost
   tasks:
+    - name: Registering OS ID
+      ansible.builtin.command: "{{ ansible_env.SHELL }} -c \"grep '^ID=.*' /etc/os-release | sed 's/ID=//'\""
+      register: os
+
     - name: Checking if Neovim is already installed
       ansible.builtin.stat:
         path=/usr/local/bin/nvim
@@ -30,7 +34,27 @@
           - gettext
           - curl
         state: present
-      when: not nvim.stat.exists
+      when: not nvim.stat.exists and os.stdout == "fedora"
+
+    - name: Installing prerequisites
+      become: true
+      ansible.builtin.apt:
+        name:
+          - ninja-build
+          - libtool
+          - libtool-bin
+          - autoconf
+          - automake
+          - cmake
+          - g++
+          - make
+          - pkg-config
+          - unzip
+          - doxygen
+          - gettext
+          - curl
+        state: present
+      when: not nvim.stat.exists and os.stdout == "ubuntu" or os.stdout == "pop"
 
     - name: Cloning Neovim
       ansible.builtin.git:
